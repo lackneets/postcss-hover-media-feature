@@ -8,8 +8,8 @@ yarn-error.log
 .prettierrc.js
 
 # generated files
-index.cjs.js
-index.cjs.js.map
-index.es.mjs
-index.es.mjs.map
+# index.cjs.js
+# index.cjs.js.map
+# index.es.mjs
+# index.es.mjs.map
 coverage/
