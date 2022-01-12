@@ -1,25 +1,19 @@
 const selectorParser = require('postcss-selector-parser')
 
-function isHoverSelector(selector){
-  return selector.value === ':hover' || (selector.nodes && selector.nodes.some(isHoverSelector))
-}
-
 const selectorProcessor = selectorParser(selectors => {
   let hoverSelectors = []
 
-  selectors.walk(selector => {
-    if (isHoverSelector(selector)) {
-      hoverSelectors.push(`${selector.parent}`);
-    }
+  selectors.filter(selector => {
+    selector.walk(node => {
+      if (node.type === 'pseudo' && node.value === ':hover') {
+        hoverSelectors.push(selector.toString())
+      }
+    })
   })
 
-  let nonHoverSelectors = selectors.reduce((acc, selector) => {
-    if (hoverSelectors.includes(`${selector}`)) {
-      return acc
-    }
-
-    return [...acc, `${selector}`]
-  }, [])
+  let nonHoverSelectors = selectors
+    .map(selector => `${selector}`)
+    .filter(selectorExpression => !hoverSelectors.includes(selectorExpression))
 
   return { hoverSelectors, nonHoverSelectors }
 })
