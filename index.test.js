@@ -68,6 +68,18 @@ describe('basic usage', () => {
       '@media (hover: hover) {:is(button,[role="button"]):hover { background-color: transparent; } }'
     )
   })
+
+  it('works with :not(:hover) selectors', () => {
+    run(
+      '.this-is-a-class:not(:hover), .banana {}',
+      '.banana {}@media (hover: hover) {.this-is-a-class:not(:hover) {}\n}'
+    )
+
+    run(
+      '.this-is-a-class:not(:hover), .banana:not(:hover) {}',
+      '@media (hover: hover) {.this-is-a-class:not(:hover), .banana:not(:hover) {}\n}'
+    )
+  })
 })
 
 describe('when `fallback: true`', () => {
